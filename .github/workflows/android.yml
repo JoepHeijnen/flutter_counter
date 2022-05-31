@@ -32,8 +32,8 @@ jobs:
           popd
       - name: Upload APK
         run: |
-          gcloud auth activate-service-account --key-file=upload-keystore
-          gcloud --quiet config set project Flutter-counter
+          gcloud auth activate-service-account --key-file=flutter-counter.json
+          gcloud --quiet config set project flutter-counter-8904f
           gcloud firebase test android run --type instrumentation \
             --app build/app/outputs/apk/debug/app-debug.apk \
             --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk\
