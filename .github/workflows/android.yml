@@ -23,7 +23,15 @@ jobs:
         run: flutter pub get
       - name: Analyze
         run: flutter analyze
-      - name: Test
+      - name: Assemble app debug APK
         run: |
-          flutter test
-          flutter test integration_test
+          pushd android
+          flutter build apk
+          ./gradlew app:assembleAndroidTest
+          ./gradlew app:assembleDebug -Ptarget=test/main_test.dart
+          popd
+      - name: Upload app APK
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-debug
+          path: /build/app/outputs/apk/debug/app-debug.apk
