@@ -28,10 +28,13 @@ jobs:
           pushd android
           flutter build apk
           ./gradlew app:assembleAndroidTest
-          ./gradlew app:assembleDebug -Ptarget=test/main_test.dart
+          ./gradlew app:assembleDebug -Ptarget=integration_test/main_test.dart
           popd
-      - name: Upload app APK
-        uses: actions/upload-artifact@v1
-        with:
-          name: app-debug
-          path: /build/app/outputs/apk/debug/app-debug.apk
+      - name: Upload APK
+        run: |
+          gcloud auth activate-service-account --key-file=upload-keystore
+          gcloud --quiet config set project Flutter-counter
+          gcloud firebase test android run --type instrumentation \
+            --app build/app/outputs/apk/debug/app-debug.apk \
+            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk\
+            --timeout 2m
