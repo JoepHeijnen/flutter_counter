@@ -29,10 +29,12 @@ jobs:
       - name: Unit testing
         run: flutter test
       - uses: nanasess/setup-chromedriver@v1
+        with:
+          chromedriver-version: '102.0.5005.61'
       - name: Start Chrome driver
         run: |
           export DISPLAY=:99
-          chromedriver --port=4444 --url-base=/wd/hub &
+          chromedriver --port=4444 &
       - name: Integration testing
         run: |
           flutter drive \
