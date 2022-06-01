@@ -30,7 +30,7 @@ jobs:
         run: flutter test
       - uses: nanasess/setup-chromedriver@v1
         with:
-          chromedriver-version: '101.0.4951.64'
+          chromedriver-version: '101.0.4951.41'
       - name: Start Chrome driver
         run: |
           export DISPLAY=:99
