@@ -32,7 +32,7 @@ jobs:
       - name: Start Chrome driver
         run: |
           export DISPLAY=:99
-          chromedriver --url-base=/wd/hub &
+          chromedriver --port=4444 --url-base=/wd/hub &
       - name: Integration testing
         run: |
           flutter drive \
