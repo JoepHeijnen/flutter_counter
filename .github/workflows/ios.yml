@@ -1,0 +1,41 @@
+name: iOS CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Checkout Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Get Flutter version  
+        run: flutter --version
+      - name: Get packages
+        run: flutter pub get
+      - name: Analyze code
+        run: flutter analyze
+      - name: Unit testing
+        run: flutter test
+      - name: Assemble release build
+        run: |
+          flutter build ios integration_test/main_test.dart --release
+
+          pushd ios
+          xcodebuild -workspace Runner.xcworkspace -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
+          popd
+
+          pushd build/ios_integ/Build/Products
+          zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.4-arm64.xctestrun
+          popd
