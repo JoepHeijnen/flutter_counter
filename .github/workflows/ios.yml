@@ -19,6 +19,14 @@ jobs:
     - name: Select latest Xcode
       run: "sudo xcode-select -s /Applications/Xcode.app"
     - uses: actions/checkout@v2
+    - name: Configure Keychain
+      run: |
+        security create-keychain -p "" "$KEYCHAIN"
+        security list-keychains -s "$KEYCHAIN"
+        security default-keychain -s "$KEYCHAIN"
+        security unlock-keychain -p "" "$KEYCHAIN"
+        security set-keychain-settings
+        security list-keychains
 
 # jobs:
 #   build:
@@ -71,9 +79,9 @@ jobs:
 #         run: |
 #           flutter build ios integration_test/main_test.dart --release
 
-#           pushd ios
-#           xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
-#           popd
+          # pushd ios
+          # xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
+          # popd
 
 #           pushd build/ios_integ/Build/Products
 #           zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.4-arm64.xctestrun
