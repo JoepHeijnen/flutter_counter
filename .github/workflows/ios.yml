@@ -66,14 +66,13 @@ jobs:
         popd
 
         pushd build/ios_integ/Build/Products
-        ls
-        zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.4-arm64.xctestrun
+        zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.2-arm64.xctestrun
         popd
     - name: Integration testing
       run: |
         gcloud auth activate-service-account --key-file=flutter-counter.json
         gcloud --quiet config set project flutter-counter-8904f
-        gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --xctestrun-file="build/ios_integ/Build/Products/Runner_iphoneos15.4-arm64.xctestrun"
+        gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --xctestrun-file="build/ios_integ/Build/Products/Runner_iphoneos15.2-arm64.xctestrun"
 
 # jobs:
 #   build:
