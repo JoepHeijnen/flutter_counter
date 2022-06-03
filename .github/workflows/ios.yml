@@ -28,10 +28,11 @@ jobs:
         run: flutter analyze
       - name: Unit testing
         run: flutter test
-      - name: 'Import Certificate'
+      - name: 'Import Certificate: Development'
         uses: devbotsxyz/xcode-import-certificate@master
         with:
           certificate-data: ${{ secrets.DEVELOPMENT_CERTIFICATE_DATA }}
+          certificate-passphrase: ${{ secrets.DEVELOPMENT_CERTIFICATE_PASSPHRASE }}
           keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
       - name: Assemble release build
         run: |
