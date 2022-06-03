@@ -1,46 +1,46 @@
-# name: Web CI
+name: Web CI
 
-# on:
-#   push:
-#     branches: [ main ]
-#   pull_request:
-#     branches: [ main ]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
-#   # Allows you to run this workflow manually from the Actions tab
-#   workflow_dispatch:
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Checkout repository
-#         uses: actions/checkout@v3
-#       - name: Checkout Flutter
-#         uses: subosito/flutter-action@v2
-#         with:
-#           channel: 'stable'
-#       - name: Get Flutter version  
-#         run: flutter --version
-#       - name: Get packages
-#         run: flutter pub get
-#       - name: Analyze code
-#         run: flutter analyze
-#       - name: Unit testing
-#         run: flutter test
-#       - name: Checkout Chrome driver
-#         uses: nanasess/setup-chromedriver@v1
-#         with:
-#           chromedriver-version: '101.0.4951.41'
-#       - name: Start Chrome driver
-#         run: |
-#           export DISPLAY=:99
-#           chromedriver --port=4444 &
-#       - name: Integration testing
-#         run: |
-#           flutter drive \
-#             --driver=test_driver/integration_test.dart \
-#             --target=integration_test/main_test.dart \
-#             -d web-server
-#       - name: Build web
-#         run: flutter build web --web-renderer html
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Checkout Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Get Flutter version  
+        run: flutter --version
+      - name: Get packages
+        run: flutter pub get
+      - name: Analyze code
+        run: flutter analyze
+      - name: Unit testing
+        run: flutter test
+      - name: Checkout Chrome driver
+        uses: nanasess/setup-chromedriver@v1
+        with:
+          chromedriver-version: '101.0.4951.41'
+      - name: Start Chrome driver
+        run: |
+          export DISPLAY=:99
+          chromedriver --port=4444 &
+      - name: Integration testing
+        run: |
+          flutter drive \
+            --driver=test_driver/integration_test.dart \
+            --target=integration_test/main_test.dart \
+            -d web-server
+      - name: Build web
+        run: flutter build web --web-renderer html
