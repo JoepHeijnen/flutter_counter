@@ -57,8 +57,6 @@ jobs:
         done
     - name: Assemble release build
       run: |
-        flutter build ios integration_test/main_test.dart --release
-
         pushd ios
         xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
         popd
@@ -66,6 +64,11 @@ jobs:
         pushd build/ios_integ/Build/Products
         zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.4-arm64.xctestrun
         popd
+    - name: Integration testing
+      run: |
+        gcloud auth activate-service-account --key-file=flutter-counter.json
+        gcloud --quiet config set project flutter-counter-8904f
+        gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --xctestrun-file="build/ios_integ/Build/Products/Runner_iphoneos15.4-arm64.xctestrun"
 
 # jobs:
 #   build:
