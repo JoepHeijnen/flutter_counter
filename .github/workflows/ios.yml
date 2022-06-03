@@ -22,13 +22,14 @@ jobs:
       CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
       KEYCHAIN: ${{ 'test.keychain' }}
     steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
     - name: Get latest Xcode
       run: "sudo xcode-select -s /Applications/Xcode.app"
     - name: Checkout Flutter
       uses: subosito/flutter-action@v2
       with:
         channel: 'stable'
-    - uses: actions/checkout@v2
     - name: 'Get Cloud SDK'
       uses: 'google-github-actions/setup-gcloud@v0'
     - name: 'Authenticate & set project in gcloud'
