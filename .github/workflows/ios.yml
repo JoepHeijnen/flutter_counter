@@ -32,7 +32,7 @@ jobs:
         uses: devbotsxyz/xcode-import-certificate@master
         with:
           certificate-data: ${{ secrets.DEVELOPMENT_CERTIFICATE_DATA }}
-          keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }
+          keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
       - name: Assemble release build
         run: |
           flutter build ios integration_test/main_test.dart --release
