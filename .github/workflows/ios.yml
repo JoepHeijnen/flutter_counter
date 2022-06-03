@@ -56,12 +56,6 @@ jobs:
           # apply provisioning profile
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp $PP_PATH ~/Library/MobileDevice/Provisioning\ Profiles
-      - name: 'Import Certificate: Development'
-        uses: devbotsxyz/xcode-import-certificate@master
-        with:
-          certificate-data: ${{ secrets.DEVELOPMENT_CERTIFICATE_DATA }}
-          certificate-passphrase: ${{ secrets.DEVELOPMENT_CERTIFICATE_PASSPHRASE }}
-          keychain-password: ${{ secrets.KEYCHAIN_PASSWORD }}
       - name: Assemble release build
         run: |
           flutter build ios integration_test/main_test.dart --release
