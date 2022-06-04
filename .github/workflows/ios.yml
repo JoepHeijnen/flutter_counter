@@ -35,7 +35,7 @@ jobs:
     - name: 'Authenticate & set project in gcloud'
       run: |
         gcloud auth activate-service-account --key-file=flutter-counter.json
-        gcloud --quiet config set project parro-comm
+        gcloud --quiet config set project flutter-counter-8904f
     - name: Get Flutter version  
       run: flutter --version
     - name: Get packages
