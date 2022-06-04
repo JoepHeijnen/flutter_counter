@@ -1,45 +1,45 @@
-name: Android CI
+# name: Android CI
 
-on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+# on:
+#   push:
+#     branches: [ main ]
+#   pull_request:
+#     branches: [ main ]
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+#   # Allows you to run this workflow manually from the Actions tab
+#   workflow_dispatch:
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-      - name: Checkout Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: 'stable'
-      - name: Get Flutter version  
-        run: flutter --version
-      - name: Get packages
-        run: flutter pub get
-      - name: Analyze code
-        run: flutter analyze
-      - name: Unit testing
-        run: flutter test
-      - name: Assemble debug APK
-        run: |
-          pushd android
-          flutter build apk
-          ./gradlew app:assembleAndroidTest
-          ./gradlew app:assembleDebug -Ptarget=integration_test/main_test.dart
-          popd
-      - name: Integration testing
-        run: |
-          gcloud auth activate-service-account --key-file=flutter-counter.json
-          gcloud --quiet config set project flutter-counter-8904f
-          gcloud firebase test android run --type instrumentation \
-            --app build/app/outputs/apk/debug/app-debug.apk \
-            --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk\
-            --timeout 2m
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+#       - name: Checkout Flutter
+#         uses: subosito/flutter-action@v2
+#         with:
+#           channel: 'stable'
+#       - name: Get Flutter version  
+#         run: flutter --version
+#       - name: Get packages
+#         run: flutter pub get
+#       - name: Analyze code
+#         run: flutter analyze
+#       - name: Unit testing
+#         run: flutter test
+#       - name: Assemble debug APK
+#         run: |
+#           pushd android
+#           flutter build apk
+#           ./gradlew app:assembleAndroidTest
+#           ./gradlew app:assembleDebug -Ptarget=integration_test/main_test.dart
+#           popd
+#       - name: Integration testing
+#         run: |
+#           gcloud auth activate-service-account --key-file=flutter-counter.json
+#           gcloud --quiet config set project flutter-counter-8904f
+#           gcloud firebase test android run --type instrumentation \
+#             --app build/app/outputs/apk/debug/app-debug.apk \
+#             --test build/app/outputs/apk/androidTest/debug/app-debug-androidTest.apk\
+#             --timeout 2m
