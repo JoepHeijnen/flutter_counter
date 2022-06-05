@@ -78,4 +78,4 @@ jobs:
         popd
     - name: Integration testing
       run: |
-        gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --xctestrun-file="build/ios_integ/Build/Products/Runner_iphoneos15.2-arm64.xctestrun" --device model=iphone13pro,version=15.2,orientation=portrait
+        gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --device model=iphone13pro,version=15.2,orientation=portrait
