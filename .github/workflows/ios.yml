@@ -79,4 +79,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: ios-artifact
-        path: /build/ios_integ/Build/Products/ios_test.zip
+        path: build/ios_integ/Build/Products/ios_test.zip
