@@ -7,5 +7,5 @@ xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runne
 popd
 
 pushd build/ios_integ/Build/Products
-zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.2-arm64.xctestrun
+zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.4-arm64.xctestrun
 popd
