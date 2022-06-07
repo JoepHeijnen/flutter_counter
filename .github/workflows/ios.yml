@@ -76,7 +76,7 @@ jobs:
         pushd build/ios_integ/Build/Products
         zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.2-arm64.xctestrun
         popd
-      - uses: actions/upload-artifact@v3
-        with:
-          name: ios-artifact
-          path: /build/ios_integ/Build/Products/ios_test.zip
+    - uses: actions/upload-artifact@v3
+      with:
+        name: ios-artifact
+        path: /build/ios_integ/Build/Products/ios_test.zip
