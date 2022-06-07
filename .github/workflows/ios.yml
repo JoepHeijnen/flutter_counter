@@ -67,9 +67,6 @@ jobs:
         done
     - name: Assemble release build
       run: |
-        flutter clean
-        rm ios/Podfile.lock pubspec.lock
-        rm -rf ios/Pods
         flutter build ios integration_test/main_test.dart --release
 
         pushd ios
