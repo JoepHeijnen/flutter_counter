@@ -2,10 +2,10 @@ name: iOS CI
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 jobs:
   build:
@@ -46,38 +46,38 @@ jobs:
     - run: fastlane beta
       env:
         MATCH_PASSWORD: ${{ secrets.APP_STORE_CONNECT_API }}
-    - name: Configure Keychain
-      run: |
-        security create-keychain -p "" "$KEYCHAIN"
-        security list-keychains -s "$KEYCHAIN"
-        security default-keychain -s "$KEYCHAIN"
-        security unlock-keychain -p "" "$KEYCHAIN"
-        security set-keychain-settings
-        security list-keychains
-    - name: Configure code signing
-      run: |
-        gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERTS_ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
-        gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISION_ENCRYPTION_PWD" "$ENCRYPTED_PROVISION_FILE_PATH"
-        security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$CERTS_EXPORT_PWD" -A
-        security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
-        tar xzvf $DECRYPTED_PROVISION_FILE_PATH
-        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
-        for PROVISION in `ls ./*.mobileprovision`
-        do
-          UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
-          cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
-        done
-    - name: Assemble release build
-      run: |
-        flutter build ios integration_test/main_test.dart --release
+    # - name: Configure Keychain
+    #   run: |
+    #     security create-keychain -p "" "$KEYCHAIN"
+    #     security list-keychains -s "$KEYCHAIN"
+    #     security default-keychain -s "$KEYCHAIN"
+    #     security unlock-keychain -p "" "$KEYCHAIN"
+    #     security set-keychain-settings
+    #     security list-keychains
+    # - name: Configure code signing
+    #   run: |
+    #     gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERTS_ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
+    #     gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISION_ENCRYPTION_PWD" "$ENCRYPTED_PROVISION_FILE_PATH"
+    #     security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$CERTS_EXPORT_PWD" -A
+    #     security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+    #     tar xzvf $DECRYPTED_PROVISION_FILE_PATH
+    #     mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+    #     for PROVISION in `ls ./*.mobileprovision`
+    #     do
+    #       UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+    #       cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+    #     done
+    # - name: Assemble release build
+    #   run: |
+    #     flutter build ios integration_test/main_test.dart --release
 
-        pushd ios
-        xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
-        popd
+    #     pushd ios
+    #     xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
+    #     popd
 
-        pushd build/ios_integ/Build/Products
-        zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.2-arm64.xctestrun
-        popd
-    - name: Integration testing
-      run: |
-        gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --device model=ipad5,version=15.4,orientation=portrait
+    #     pushd build/ios_integ/Build/Products
+    #     zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.2-arm64.xctestrun
+    #     popd
+    # - name: Integration testing
+    #   run: |
+    #     gcloud firebase test ios run --test "build/ios_integ/Build/Products/ios_tests.zip" --device model=ipad5,version=15.4,orientation=portrait
