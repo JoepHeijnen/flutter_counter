@@ -46,6 +46,7 @@ jobs:
     - run: fastlane beta
       env:
         MATCH_PASSWORD: ${{ secrets.APP_STORE_CONNECT_API }}
+      working-directory: ios
     # - name: Configure Keychain
     #   run: |
     #     security create-keychain -p "" "$KEYCHAIN"
