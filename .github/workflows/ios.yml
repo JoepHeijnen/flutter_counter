@@ -42,9 +42,8 @@ jobs:
       run: flutter analyze
     - name: Unit testing
       run: flutter test
-    - name: Fastlane
-      uses: actions/checkout@v2
-      run: fastlane beta
+    - uses: actions/checkout@v2
+    - run: fastlane beta
       env:
         MATCH_PASSWORD: ${{ secrets.APP_STORE_CONNECT_API }}
     - name: Configure Keychain
