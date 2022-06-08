@@ -42,10 +42,11 @@ jobs:
       run: flutter analyze
     - name: Unit testing
       run: flutter test
-    - uses: actions/checkout@v2
-      - run: fastlane beta
-        env:
-          MATCH_PASSWORD: ${{ secrets.APP_STORE_CONNECT_API }}
+    - name: Fastlane
+      uses: actions/checkout@v2
+      run: fastlane beta
+      env:
+        MATCH_PASSWORD: ${{ secrets.APP_STORE_CONNECT_API }}
     - name: Configure Keychain
       run: |
         security create-keychain -p "" "$KEYCHAIN"
