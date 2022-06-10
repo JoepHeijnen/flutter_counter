@@ -50,6 +50,7 @@ jobs:
       with:
         ruby-version: 2.7.2
         bundler-cache: true
+      working-directory: ios
  
     # - name: Import Code-Signing Certificates
     #   uses: Apple-Actions/import-codesign-certs@v1
@@ -58,7 +59,7 @@ jobs:
     #     p12-password: ${{ secrets.IOS_DIST_SIGNING_KEY_PASSWORD }}
   
     - name: Build & upload iOS binary
-      run: fastlane ios build_upload_testflight
+      run: bundle exec fastlane ios build_upload_testflight
       env:
         ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
         ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
