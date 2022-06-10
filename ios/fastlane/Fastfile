@@ -73,6 +73,7 @@ platform :ios do
         app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
         
         profile_name = "App Provisioning Profile" # the name of the profile to use for the build
+        app_profile_name = "Flutter_test"
         output_name = "parro-iOS" # specify the name of the .ipa file to generate
         export_method = "app-store" # specify the export method
         compile_bitcode = true # specify whether to enable bitcode
@@ -95,7 +96,7 @@ platform :ios do
             export_options: {
                 method: export_method,
                 provisioningProfiles: {
-                    app_identifier => profile_name
+                    app_identifier => app_profile_name
                 },
                 compileBitcode: compile_bitcode
             }
