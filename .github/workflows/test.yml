@@ -3,7 +3,7 @@ name: Test cache CI
 on:
   workflow_dispatch:
   push:
-    branches: [ main ]
+    branches: [ test-cache ]
 
 
 env:
