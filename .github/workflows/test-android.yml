@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: [ubuntu-latest]
+    runs-on: [ ubuntu-latest ]
     env:
       FLUTTER_VERSION: '3.0.0'
 
@@ -24,10 +24,34 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
-      - name: Get cached Cloud SDK
-        uses: actions/cache@v3
-        with:
-          path: '/home/runner/work/_temp/**'
-          key: ${{ runner.os }}-gcloud-cache
-      - name: 'Get Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Get Flutter version 
+        run: flutter --version
+      - name: Get packages
+        run: flutter pub get
+      - name: Start build runner
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+      - name: Assemble debug APK
+        run: |
+          pushd android
+          flutter build apk
+          ./gradlew app:assembleAndroidTest
+          ./gradlew app:assembleDebug -Ptarget=integration_test/main_test.dart
+          popd
+  
+  test:
+    build:
+      runs-on: [ macos-latest ]
+
+      steps:
+        - name: Use flutter
+          run: flutter --version
+      #   - name: Get cached Cloud SDK
+      #     uses: actions/cache@v3
+      #     with:
+      #       path: '/home/runner/work/_temp/**'
+      #       key: ${{ runner.os }}-gcloud-cache
+      #   - name: 'Get Cloud SDK'
+      #     uses: 'google-github-actions/setup-gcloud@v0'
+      # - name: Integration testing
+      #   run: |
+      #     ls build/app/outputs/apk/debug

@@ -3,44 +3,125 @@ name: Test iOS cache CI
 on:
   workflow_dispatch:
   push:
-    branches: [ test-cache ]
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: [macos-latest]
+    runs-on: [ ubuntu-latest ]
     env:
-      ENCRYPTED_CERTS_FILE_PATH: ${{ './certs.p12.gpg' }}
-      DECRYPTED_CERTS_FILE_PATH: ${{ './certs.p12' }}
-      ENCRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz.gpg' }}
-      DECRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz' }}
-      CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
-      PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
-      CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
-      KEYCHAIN: ${{ 'test.keychain' }}
       FLUTTER_VERSION: '3.0.0'
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
-    - name: Get latest Xcode
-      run: "sudo xcode-select -s /Applications/Xcode.app"
-    - name: Get cached Flutter
-      uses: actions/cache@v3
-      with:
-        path: '/Users/runner/hostedtoolcache/flutter'
-        key: ${{ runner.os }}-flutter-cache-${{ env.FLUTTER_VERSION }}
-    - name: Checkout Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: ${{ env.FLUTTER_VERSION }}
-        channel: 'stable'
-    - name: Get cached Cloud SDK
-      uses: actions/cache@v3
-      with:
-        path: '/Users/runner/work/_temp/**'
-        key: ${{ runner.os }}-gcloud-cache
-    - name: 'Get Cloud SDK'
-      uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get cached Flutter
+        uses: actions/cache@v3
+        with:
+          path: '/opt/hostedtoolcache/flutter'
+          key: ${{ runner.os }}-flutter-cache-${{ env.FLUTTER_VERSION }}
+      - name: Checkout Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+      - name: Get Flutter version 
+        run: flutter --version
+      - name: Get packages
+        run: flutter pub get
+      - name: Start build runner
+        run: flutter packages pub run build_runner build --delete-conflicting-outputs
+    - name: Configure Keychain
+      run: |
+        security create-keychain -p "" "$KEYCHAIN"
+        security list-keychains -s "$KEYCHAIN"
+        security default-keychain -s "$KEYCHAIN"
+        security unlock-keychain -p "" "$KEYCHAIN"
+        security set-keychain-settings
+        security list-keychains
+    - name: Configure code signing
+      run: |
+        gpg -d -o "$DECRYPTED_CERTS_FILE_PATH" --pinentry-mode=loopback --passphrase "$CERTS_ENCRYPTION_PWD" "$ENCRYPTED_CERTS_FILE_PATH"
+        gpg -d -o "$DECRYPTED_PROVISION_FILE_PATH" --pinentry-mode=loopback --passphrase "$PROVISION_ENCRYPTION_PWD" "$ENCRYPTED_PROVISION_FILE_PATH"
+        security import "$DECRYPTED_CERTS_FILE_PATH" -k "$KEYCHAIN" -P "$CERTS_EXPORT_PWD" -A
+        security set-key-partition-list -S apple-tool:,apple: -s -k "" "$KEYCHAIN"
+        tar xzvf $DECRYPTED_PROVISION_FILE_PATH
+        mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+        for PROVISION in `ls ./*.mobileprovision`
+        do
+          UUID=`/usr/libexec/PlistBuddy -c 'Print :UUID' /dev/stdin <<< $(security cms -D -i ./$PROVISION)`
+          cp "./$PROVISION" "$HOME/Library/MobileDevice/Provisioning Profiles/$UUID.mobileprovision"
+        done
+    - name: Assemble release build
+      run: |
+        flutter build ios integration_test/main_test.dart --release
+
+        pushd ios
+        xcodebuild -workspace Runner.xcworkspace -allowProvisioningUpdates -scheme Runner -config Flutter/Release.xcconfig -derivedDataPath "../build/ios_integ" -sdk iphoneos build-for-testing
+        popd
+
+        pushd build/ios_integ/Build/Products
+        zip -r ios_tests.zip Release-iphoneos Runner_iphoneos15.2-arm64.xctestrun
+        popd
+  test:
+    build:
+      runs-on: [ ubuntu-latest ]
+
+      steps:
+        - name: Get cached Cloud SDK
+          uses: actions/cache@v3
+          with:
+            path: '/home/runner/work/_temp/**'
+            key: ${{ runner.os }}-gcloud-cache
+        - name: 'Get Cloud SDK'
+          uses: 'google-github-actions/setup-gcloud@v0'
+      - name: Integration testing
+        run: |
+          ls build/app/outputs/apk/debug
+
+
+# name: Test iOS cache CI
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches: [ test-cache ]
+
+# jobs:
+#   build:
+#     runs-on: [macos-latest]
+#     env:
+#       ENCRYPTED_CERTS_FILE_PATH: ${{ './certs.p12.gpg' }}
+#       DECRYPTED_CERTS_FILE_PATH: ${{ './certs.p12' }}
+#       ENCRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz.gpg' }}
+#       DECRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz' }}
+#       CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
+#       PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
+#       CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
+#       KEYCHAIN: ${{ 'test.keychain' }}
+#       FLUTTER_VERSION: '3.0.0'
+
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v3
+#     - name: Get latest Xcode
+#       run: "sudo xcode-select -s /Applications/Xcode.app"
+#     - name: Get cached Flutter
+#       uses: actions/cache@v3
+#       with:
+#         path: '/Users/runner/hostedtoolcache/flutter'
+#         key: ${{ runner.os }}-flutter-cache-${{ env.FLUTTER_VERSION }}
+#     - name: Checkout Flutter
+#       uses: subosito/flutter-action@v2
+#       with:
+#         flutter-version: ${{ env.FLUTTER_VERSION }}
+#         channel: 'stable'
+#     - name: Get cached Cloud SDK
+#       uses: actions/cache@v3
+#       with:
+#         path: '/Users/runner/work/_temp/**'
+#         key: ${{ runner.os }}-gcloud-cache
+#     - name: 'Get Cloud SDK'
+#       uses: 'google-github-actions/setup-gcloud@v0'
     # - name: 'Authenticate & set project in gcloud'
     #   run: |
     #     gcloud auth activate-service-account --key-file=flutter-counter.json
