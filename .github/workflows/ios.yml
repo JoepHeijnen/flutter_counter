@@ -2,23 +2,23 @@ name: iOS CI
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [ main ]
-  # pull_request:
-  #   branches: [ main ]
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   build:
     runs-on: [macos-latest]
-    env:
-      ENCRYPTED_CERTS_FILE_PATH: ${{ './certs.p12.gpg' }}
-      DECRYPTED_CERTS_FILE_PATH: ${{ './certs.p12' }}
-      ENCRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz.gpg' }}
-      DECRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz' }}
-      CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
-      PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
-      CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
-      KEYCHAIN: ${{ 'test.keychain' }}
+    # env:
+    #   ENCRYPTED_CERTS_FILE_PATH: ${{ './certs.p12.gpg' }}
+    #   DECRYPTED_CERTS_FILE_PATH: ${{ './certs.p12' }}
+    #   ENCRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz.gpg' }}
+    #   DECRYPTED_PROVISION_FILE_PATH: ${{ './provisioning.tar.gz' }}
+    #   CERTS_ENCRYPTION_PWD: ${{ secrets.CERTS_ENCRYPTION_PWD }}
+    #   PROVISION_ENCRYPTION_PWD: ${{ secrets.PROVISION_ENCRYPTION_PWD }}
+    #   CERTS_EXPORT_PWD: ${{ secrets.CERTS_EXPORT_PWD }}
+    #   KEYCHAIN: ${{ 'test.keychain' }}
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
@@ -42,6 +42,8 @@ jobs:
       run: flutter analyze
     - name: Unit testing
       run: flutter test
+    - name: Flutter build iOS
+      run: flutter build ios --release --no-codesign
     
     - uses: actions/checkout@v2
 
