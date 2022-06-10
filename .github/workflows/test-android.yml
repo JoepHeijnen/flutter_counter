@@ -8,6 +8,7 @@ on:
 jobs:
   build:
     runs-on: [ ubuntu-latest ]
+
     env:
       FLUTTER_VERSION: '3.0.0'
 
@@ -39,12 +40,11 @@ jobs:
           popd
   
   test:
-    build:
-      runs-on: [ macos-latest ]
+    runs-on: [ macos-latest ]
 
-      steps:
-        - name: Use flutter
-          run: flutter --version
+    steps:
+      - name: Use flutter
+        run: flutter --version
       #   - name: Get cached Cloud SDK
       #     uses: actions/cache@v3
       #     with:
