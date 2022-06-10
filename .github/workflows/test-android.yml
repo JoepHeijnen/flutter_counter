@@ -1,0 +1,27 @@
+name: Test iOS cache CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ test-cache ]
+
+jobs:
+  build:
+    runs-on: [ubuntu-latest]
+    env:
+      FLUTTER_VERSION: '3.0.0'
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Get cached Flutter
+        uses: actions/cache@v3
+        with:
+          path: '/opt/hostedtoolcache/flutter'
+          key: ${{ runner.os }}-flutter-cache-${{ env.FLUTTER_VERSION }}
+          restore-keys: |
+            ${{ runner.OS }}-flutter-cache-
+      - name: Checkout Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
