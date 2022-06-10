@@ -87,7 +87,6 @@ platform :ios do
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
         
-        puts(message: app_identifier)
         # build the app
         gym(
             scheme: "Runner", # replace with name of your project’s scheme
@@ -96,7 +95,7 @@ platform :ios do
             export_options: {
                 method: export_method,
                 provisioningProfiles: {
-                    app_identifier => app_profile_name
+                    app_identifier => profile_name
                 },
                 compileBitcode: compile_bitcode
             }
