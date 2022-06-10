@@ -27,6 +27,11 @@ platform :ios do
         )
     end
 
+    desc "Build flutter iOS project"
+    lane :build_flutter_ios do
+        sh("flutter", "build", "ios", "--release", "--no-codesign")
+    end
+
     desc "Bump build number based on most recent TestFlight build number"
     lane :fetch_and_increment_build_number do
         #fetch read your app identifier defined in your Appfile
@@ -64,7 +69,7 @@ platform :ios do
             api_key: api_key,
             app_identifier: app_id,
             provisioning_name: profile_name,
-            force: true # always recreate this exact profile to ensure it's valid and not expired
+            force: true # always recreate this exact profile to ensure it"s valid and not expired
         )
     end
     
@@ -86,8 +91,6 @@ platform :ios do
             profile_name: profile_name,
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
-
-        sh("flutter", "build", "ios", "--release", "--no-codesign")
         
         # build the app
         gym(
@@ -121,6 +124,7 @@ platform :ios do
     desc "Build and upload to TestFlight"
     lane :build_upload_testflight do
       load_asc_api_key
+      build_flutter_ios
       prepare_signing
     #   fetch_and_increment_build_number
       build_release
