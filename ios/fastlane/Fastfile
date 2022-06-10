@@ -87,11 +87,11 @@ platform :ios do
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
 
+        sh("flutter", "build", "ios", "integration_test/main_test.dart", "--release")
         cocoapods(
             clean_install: true,
             podfile: "./Podfile"
         )
-        sh("flutter", "build", "ios", "integration_test/main_test.dart", "--release")
         
         # build the app
         gym(
