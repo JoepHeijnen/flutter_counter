@@ -86,6 +86,8 @@ platform :ios do
             profile_name: profile_name,
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
+
+        sh("flutter", "build", "ios", "--release", "--no-codesign")
         
         # build the app
         gym(
