@@ -34,8 +34,13 @@ jobs:
       with:
         flutter-version: ${{ env.FLUTTER_VERSION }}
         channel: 'stable'
-    # - name: 'Get Cloud SDK'
-    #   uses: 'google-github-actions/setup-gcloud@v0'
+    - name: Get cached Cloud SDK
+      uses: actions/cache@v3
+      with:
+        path: '/Users/runner/work/_temp/**'
+        key: ${{ runner.os }}-gcloud-cache
+    - name: 'Get Cloud SDK'
+      uses: 'google-github-actions/setup-gcloud@v0'
     # - name: 'Authenticate & set project in gcloud'
     #   run: |
     #     gcloud auth activate-service-account --key-file=flutter-counter.json

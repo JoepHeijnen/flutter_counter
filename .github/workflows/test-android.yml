@@ -24,3 +24,10 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
+      - name: Get cached Cloud SDK
+        uses: actions/cache@v3
+        with:
+          path: '/home/runner/work/_temp/**'
+          key: ${{ runner.os }}-gcloud-cache
+      - name: 'Get Cloud SDK'
+        uses: 'google-github-actions/setup-gcloud@v0'
