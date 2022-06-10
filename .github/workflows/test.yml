@@ -1,8 +1,10 @@
 name: Test cache CI
 
 on:
+  workflow_dispatch:
   push:
-    branches: [develop, master]
+    branches: [ main ]
+
 
 env:
   flutter_version: '3.0.0'
