@@ -24,4 +24,5 @@ jobs:
       - name: Checkout Flutter
         uses: subosito/flutter-action@v2
         with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
