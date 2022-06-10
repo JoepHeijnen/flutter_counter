@@ -87,6 +87,7 @@ platform :ios do
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
         
+        puts(message: app_identifier)
         # build the app
         gym(
             scheme: "Runner", # replace with name of your project’s scheme
