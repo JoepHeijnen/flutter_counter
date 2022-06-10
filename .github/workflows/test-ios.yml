@@ -27,7 +27,7 @@ jobs:
     - name: Get cached Flutter
       uses: actions/cache@v3
       with:
-        path: '/opt/hostedtoolcache/flutter'
+        path: '/Users/runner/hostedtoolcache/flutter'
         key: ${{ runner.os }}-ios-flutter-cache-${{ env.FLUTTER_VERSION }}
         restore-keys: |
           ${{ runner.OS }}-ios-flutter-cache-
