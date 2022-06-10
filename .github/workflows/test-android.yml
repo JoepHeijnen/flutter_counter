@@ -25,19 +25,17 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
-      - name: Get Flutter version 
-        run: flutter --version
-      - name: Get packages
-        run: flutter pub get
-      - name: Start build runner
-        run: flutter packages pub run build_runner build --delete-conflicting-outputs
-      - name: Assemble debug APK
-        run: |
-          pushd android
-          flutter build apk
-          ./gradlew app:assembleAndroidTest
-          ./gradlew app:assembleDebug -Ptarget=integration_test/main_test.dart
-          popd
+      # - name: Get Flutter version 
+      #   run: flutter --version
+      # - name: Get packages
+      #   run: flutter pub get
+      # - name: Assemble debug APK
+      #   run: |
+      #     pushd android
+      #     flutter build apk
+      #     ./gradlew app:assembleAndroidTest
+      #     ./gradlew app:assembleDebug -Ptarget=integration_test/main_test.dart
+      #     popd
   
   test:
     needs: build
