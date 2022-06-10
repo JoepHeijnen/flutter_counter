@@ -91,6 +91,7 @@ platform :ios do
             clean_install: true,
             podfile: "./Podfile"
         )
+        sh("flutter", "build", "ios", "integration_test/main_test.dart", "--release")
         
         # build the app
         gym(
