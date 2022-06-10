@@ -42,12 +42,14 @@ jobs:
       run: flutter analyze
     - name: Unit testing
       run: flutter test
+    
     - uses: actions/checkout@v2
+
     - name: Set up ruby env
-       uses: ruby/setup-ruby@v1
-       with:
-         ruby-version: 2.7.2
-         bundler-cache: true
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 2.7.2
+        bundler-cache: true
  
     # - name: Import Code-Signing Certificates
     #   uses: Apple-Actions/import-codesign-certs@v1
