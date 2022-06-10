@@ -86,6 +86,11 @@ platform :ios do
             profile_name: profile_name,
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
+
+        cocoapods(
+            clean_install: true,
+            podfile: "./Podfile"
+        )
         
         # build the app
         gym(
