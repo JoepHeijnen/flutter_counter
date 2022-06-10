@@ -20,7 +20,7 @@ jobs:
           path: '/opt/hostedtoolcache/flutter'
           key: ${{ runner.os }}-android-flutter-cache-${{ env.FLUTTER_VERSION }}
           restore-keys: |
-            ${{ runner.OS }}-android-flutter-cache-
+            ${{ runner.os }}-android-flutter-cache-
       - name: Checkout Flutter
         uses: subosito/flutter-action@v2
         with:
