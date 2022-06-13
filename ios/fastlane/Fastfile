@@ -136,7 +136,7 @@ platform :ios do
         
         # main app profile
         sigh(
-            development: true,
+            developer_id: true,
             api_key: api_key,
             app_identifier: app_id,
             provisioning_name: profile_name,
