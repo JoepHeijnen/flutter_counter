@@ -20,7 +20,7 @@ jobs:
           path: |
             '/Users/runner/hostedtoolcache/flutter'
             '/Users/runner/work/_temp/**'
-          key: ${{ runner.os }}-cache-${{ env.FLUTTER_VERSION }}
+          key: ${{ runner.os }}-test-cache-${{ env.FLUTTER_VERSION }}
       - name: Checkout Flutter
         uses: subosito/flutter-action@v2
         with:
