@@ -44,7 +44,7 @@ platform :ios do
             should_zip_build_products: true
         )
         firebase_test_lab_ios_xctest(
-            gcp_project: 'Flutter-counter'
+            gcp_project: 'Flutter-counter',
             devices: [
                 {
                     ios_model_id: 'iphone13pro',
