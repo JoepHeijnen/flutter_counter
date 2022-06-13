@@ -148,7 +148,7 @@ platform :ios do
     desc "Build and upload to TestFlight"
     lane :build_upload_testflight do
       load_asc_api_key
-      build_flutter_ios
+    #   build_flutter_ios
       prepare_signing
       #   fetch_and_increment_build_number
       firebase_test_lab
