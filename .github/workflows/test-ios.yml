@@ -17,17 +17,14 @@ jobs:
       - name: Get cached Flutter
         uses: actions/cache@v3
         with:
-          path: '/Users/runner/hostedtoolcache/flutter'
-          key: ${{ runner.os }}-flutter-cache-${{ env.FLUTTER_VERSION }}
+          path: |
+            '/Users/runner/hostedtoolcache/flutter'
+            '/Users/runner/work/_temp/**'
+          key: ${{ runner.os }}-cache-${{ env.FLUTTER_VERSION }}
       - name: Checkout Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
-      - name: Get cached Cloud SDK
-        uses: actions/cache@v3
-        with:
-          path: '/Users/runner/work/_temp/**'
-          key: ${{ runner.os }}-gcloud-cache
       - name: 'Get Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v0'
