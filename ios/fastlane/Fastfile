@@ -115,6 +115,12 @@ platform :ios do
             profile_name: profile_name,
             build_configurations: ["Release"] # only toggle code signing settings for Release configurations
         )
+
+        cocoapods(
+            clean_install: true,
+            podfile: "./Podfile"
+        )
+        sh("flutter", "build", "ios", "integration_test/main_test.dart", "--release")
         
         # build the app
         gym(
@@ -149,10 +155,10 @@ platform :ios do
     lane :build_upload_testflight do
       load_asc_api_key
       prepare_signing
-      build_flutter_ios
+    #   build_flutter_ios
       #   fetch_and_increment_build_number
-      firebase_test_lab
       build_release
+      firebase_test_lab
     #   upload_release
     end    
 end
