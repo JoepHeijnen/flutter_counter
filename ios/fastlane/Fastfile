@@ -129,6 +129,7 @@ platform :ios do
         profile_name = "Flutter_test" # replace with the name of your existing profile, or define a name for the profile that fastlane will create if it’s not found
         
         cert(
+            development: true,
             api_key: api_key,
             keychain_path: ENV["KEYCHAIN_PATH"] # the path to the keychain where your certificates are stored
         )
@@ -150,7 +151,6 @@ platform :ios do
             skip_detect_devices: true,
             build_for_testing: true,
             sdk: 'iphoneos',
-            skip_certificate_verification: true,
             should_zip_build_products: true
         )
         firebase_test_lab_ios_xctest(
