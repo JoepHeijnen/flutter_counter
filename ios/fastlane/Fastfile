@@ -150,6 +150,7 @@ platform :ios do
             skip_detect_devices: true,
             build_for_testing: true,
             sdk: 'iphoneos',
+            skip_certificate_verification: true,
             should_zip_build_products: true
         )
         firebase_test_lab_ios_xctest(
