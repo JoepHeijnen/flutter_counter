@@ -38,10 +38,10 @@ jobs:
       run: flutter --version
     - name: Get packages
       run: flutter pub get
-    - name: Analyze code
-      run: flutter analyze
-    - name: Unit testing
-      run: flutter test
+    # - name: Analyze code
+    #   run: flutter analyze
+    # - name: Unit testing
+    #   run: flutter test
     
     - uses: actions/checkout@v2
 
