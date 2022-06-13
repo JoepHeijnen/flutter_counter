@@ -42,8 +42,6 @@ jobs:
       run: flutter analyze
     - name: Unit testing
       run: flutter test
-    - name: Flutter build ios folder structure
-      run: flutter build ios integration_test/main_test.dart --release
     
     - uses: actions/checkout@v2
 
