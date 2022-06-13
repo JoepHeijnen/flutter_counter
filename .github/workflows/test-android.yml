@@ -9,7 +9,7 @@ jobs:
   build:
     runs-on: [ubuntu-latest]
     env:
-      FLUTTER_VERSION: '3.0.0'
+      FLUTTER_VERSION: '3.0.1'
 
     steps:
       - name: Checkout repository
