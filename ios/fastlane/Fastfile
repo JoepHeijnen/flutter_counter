@@ -121,6 +121,27 @@ platform :ios do
         )
     end
 
+    desc "Check certs and profiles"
+    lane :prepare_signing2 do |options|
+        app_id = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+        api_key = lane_context[SharedValues::APP_STORE_CONNECT_API_KEY]
+        
+        profile_name = "Flutter_counter" # replace with the name of your existing profile, or define a name for the profile that fastlane will create if it’s not found
+        
+        cert(
+            api_key: api_key,
+            keychain_path: ENV["KEYCHAIN_PATH"] # the path to the keychain where your certificates are stored
+        )
+        
+        # main app profile
+        sigh(
+            api_key: api_key,
+            app_identifier: app_id,
+            provisioning_name: profile_name,
+            force: true # always recreate this exact profile to ensure it's valid and not expired
+        )
+    end
+
     desc "Upload to Firebase Test Lab"
     lane :firebase_test_lab do |options|
         scan(
@@ -151,6 +172,7 @@ platform :ios do
       prepare_signing
     #   fetch_and_increment_build_number
       build_release
+      prepare_signing2
       firebase_test_lab
     #   upload_release
     end    
