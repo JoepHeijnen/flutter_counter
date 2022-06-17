@@ -28,4 +28,4 @@ jobs:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
       - name: 'Get Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v${{ env.GOOGLE_SDK_VERSION }'
+        uses: 'google-github-actions/setup-gcloud@v${{ env.GOOGLE_SDK_VERSION }}'
