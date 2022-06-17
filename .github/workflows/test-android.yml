@@ -21,11 +21,11 @@ jobs:
           path: |
             /opt/hostedtoolcache/flutter
             /home/runner/work/_temp
-          key: ${{ runner.os }}-cache-${{ env.FLUTTER_VERSION }}-${{ env.GOOGLE_SDK_VERSION }}
+          key: ${{ runner.os }}-cache-${{ env.FLUTTER_VERSION }}
       - name: Checkout Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
       - name: 'Get Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v${{ env.GOOGLE_SDK_VERSION }}'
+        uses: 'google-github-actions/setup-gcloud@v0'
