@@ -9,7 +9,8 @@ jobs:
   build:
     runs-on: [ macos-latest ]
     env:
-      FLUTTER_VERSION: '3.0.0'
+      FLUTTER_VERSION: '3.0.1'
+      GOOGLE_SDK_VERSION: '0.6.0'
 
     steps:
       - name: Checkout repository
@@ -17,14 +18,14 @@ jobs:
       - name: Get cached Flutter
         uses: actions/cache@v3
         with:
-          path: |
-            '/Users/runner/hostedtoolcache/flutter'
-            '/Users/runner/work/_temp/**'
-          key: ${{ runner.os }}-test-cache-${{ env.FLUTTER_VERSION }}
+          path: |  
+            /Users/runner/hostedtoolcache/flutter
+            /Users/runner/work/_temp/**
+          key: ${{ runner.os }}-cache-${{ env.FLUTTER_VERSION }}-${{ env.GOOGLE_SDK_VERSION }}
       - name: Checkout Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: 'stable'
       - name: 'Get Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v0'
+        uses: 'google-github-actions/setup-gcloud@v${{ env.GOOGLE_SDK_VERSION }'
