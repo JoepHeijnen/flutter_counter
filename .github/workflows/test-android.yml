@@ -21,4 +21,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get ref
-        run: ${{ steps.get_latest_release.outputs.data.head.ref }}
+        run: echo ${{ steps.get_latest_release.outputs.data.head.ref }}
+      - name: Get data
+        run: echo ${{ steps.get_latest_release.outputs.data }}
