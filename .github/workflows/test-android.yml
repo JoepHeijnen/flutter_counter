@@ -22,5 +22,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Get ref
         run: echo ${{ steps.get_latest_release.outputs.data.head.ref }}
+      - name: Get url
+        run: echo ${{ steps.get_latest_release.outputs.data.url }}
+      - name: Get label
+        run: echo ${{ steps.get_latest_release.outputs.data.head.label }}
       - name: Get data
         run: echo ${{ steps.get_latest_release.outputs.data }}
