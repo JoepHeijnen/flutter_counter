@@ -20,6 +20,8 @@ jobs:
           repo: flutter_counter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get pr number
+        run: echo ${{ github.events.pull_request.number }}
       - name: Get url
         run: echo ${{ fromJson(steps.get_latest_release.outputs.data).url }}
       - name: Get head ref
