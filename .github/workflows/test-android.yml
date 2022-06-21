@@ -20,11 +20,9 @@ jobs:
           repo: flutter_counter
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Get ref
-        run: echo ${{ steps.get_latest_release.outputs.data.head.ref }}
       - name: Get url
-        run: echo ${{ steps.get_latest_release.outputs.data.url }}
-      - name: Get label
-        run: echo ${{ steps.get_latest_release.outputs.data.head.label }}
+        run: echo ${{ fromJson(steps.get_latest_release.outputs.data).url }}
+      - name: Get head ref
+        run: echo ${{ fromJson(steps.get_latest_release.outputs.data).head.ref }}
       - name: Get data
-        run: echo ${{ steps.get_latest_release.outputs.data }}
+        run: echo ${{ fromJson(steps.get_latest_release.outputs.data) }}
