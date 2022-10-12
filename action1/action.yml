@@ -11,6 +11,7 @@ outputs:
     value: ${{ steps.random-number-generator.outputs.random-number }}
 
 runs:
+  using: "composite"
   steps:
     - run: echo Hello ${{ inputs.flutter-version }}.
       shell: bash
