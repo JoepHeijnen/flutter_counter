@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - id: foo
-        uses: ./.github/workflows/android-build.yml
+        uses: ./.github/actions
         with:
           flutter-version: '9.9.9'
       - name: Assemble debug APK
