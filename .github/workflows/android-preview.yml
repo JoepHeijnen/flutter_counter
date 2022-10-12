@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - id: foo
-        uses: ./.github/actions
+        uses: ./action1
         with:
           flutter-version: '9.9.9'
       - name: Assemble debug APK
