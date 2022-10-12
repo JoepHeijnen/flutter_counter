@@ -1,0 +1,17 @@
+name: Android test
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: build
+        uses: ./.github/workflows/android-build.yml
+        with:
+          flutter-version: '9.9.9'
+      - name: Assemble debug APK
+        run: echo random-number ${{ steps.build.outputs.random-number }}
