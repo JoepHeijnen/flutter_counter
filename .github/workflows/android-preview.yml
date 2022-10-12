@@ -8,4 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - uses: ./action1
+      - id: foo
+        uses: ./action1
+        with:
+          flutter-version: '9.9.9'
+      - name: Assemble debug APK
+        run: echo random-number ${{ steps.foo.outputs.random-number }} 
