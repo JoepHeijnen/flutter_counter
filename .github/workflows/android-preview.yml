@@ -1,5 +1,8 @@
 name: Test two actions
 
+on:
+  push:
+
 jobs:
   build:
     runs-on: ubuntu-latest
