@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - id: foo
-        uses: ./.github/actions/build.yml
+        uses: ./.github/android-action
         with:
           flutter-version: '9.9.9'
       - name: Assemble debug APK
