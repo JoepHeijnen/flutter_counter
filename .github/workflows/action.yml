@@ -1,17 +1,5 @@
-name: Android preview
-
-on:
-  push:
-    branches: [ main ]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - id: foo
-        uses: ./action1/action.yml
-        with:
-          flutter-version: '9.9.9'
-      - name: Assemble debug APK
-        run: echo random-number ${{ steps.foo.outputs.random-number }} 
+name: "Action 1"
+description: "The First Action"
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
