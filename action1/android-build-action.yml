@@ -1,18 +1,7 @@
-name: 'Android build'
+name: Test two actions
 
-inputs:
-  flutter-version:
-    description: 'version of flutter'
-    required: true
-    default: '3.3.4'
-outputs:
-  random-number:
-    description: "Random number"
-    value: ${{ steps.random-number-generator.outputs.random-number }}
-
-runs:
-  steps:
-    - run: echo Hello ${{ inputs.flutter-version }}.
-    - id: random-number-generator
-      run: echo "::set-output name=random-number::$(echo $RANDOM)"
-    - run: echo "Goodbye"  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./action1
