@@ -1,16 +1,17 @@
 name: Test two actions
 
 on:
-  push:
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      - id: foo
-        uses: ./.github/android-action
-        with:
-          flutter-version: '9.9.9'
-      - name: Assemble debug APK
-        run: echo random-number ${{ steps.foo.outputs.random-number }} 
+      if: ${{ github.event.pull_request.number }}
+      - name: Slack Notification
+        run: echo "With number"
+      
+      if: ${{ !github.event.pull_request.number }}
+      - name: Slack Notification
+        run: echo "Without number"
+  
