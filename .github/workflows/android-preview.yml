@@ -10,11 +10,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      if: ${{ github.event.pull_request.number }}
       - name: Slack Notification
+        if: ${{ github.event.pull_request.number }}
         run: echo "With number"
       
-      if: ${{ !github.event.pull_request.number }}
       - name: Slack Notification
+        if: ${{ !github.event.pull_request.number }}
         run: echo "Without number 2"
   
