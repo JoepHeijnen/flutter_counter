@@ -16,5 +16,5 @@ jobs:
       
       if: ${{ !github.event.pull_request.number }}
       - name: Slack Notification
-        run: echo "Without number"
+        run: echo "Without number 1"
   
